@@ -6,6 +6,7 @@ export default function SearchAndFiltering({
 }) {
   const [country, setCountry] = useState("");
   const [toggleDropDown, setToggleDropDown] = useState(false);
+  const [currentRegion, setRegion] = useState("");
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -16,7 +17,27 @@ export default function SearchAndFiltering({
     onRegionChange(region);
     setCountry("");
     setToggleDropDown(false);
+    setRegion(region);
   };
+
+  const regions = [
+    {
+      name: "All Regions",
+      value: "",
+    },
+    {
+      name: "Africa",
+      value: "Africa",
+    },
+    {
+      name: "Europe",
+      value: "Europe",
+    },
+    {
+      name: "Asia",
+      value: "Asia",
+    },
+  ];
 
   return (
     <div className="px-5 flex items-center gap-10 justify-between">
@@ -37,38 +58,21 @@ export default function SearchAndFiltering({
       {toggleDropDown && (
         <div className="absolute px-5 py-2 right-10 top-32 bg-white dark:bg-primaryBlue shadow-lg rounded-md mt-2">
           <ul className="p-2">
-            <li
-              className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 p-2"
-              onClick={() => {
-                handleRegionChange("");
-              }}
-            >
-              All Regions
-            </li>
-            <li
-              className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 p-2"
-              onClick={() => {
-                handleRegionChange("Africa");
-              }}
-            >
-              Africa
-            </li>
-            <li
-              className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 p-2"
-              onClick={() => {
-                handleRegionChange("Europe");
-              }}
-            >
-              Europe
-            </li>
-            <li
-              className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 p-2"
-              onClick={() => {
-                handleRegionChange("Asia");
-              }}
-            >
-              Asia
-            </li>
+            {regions.map((region) => (
+              <li
+                key={region.value}
+                className={`cursor-pointer rounded-md mt-2 hover:bg-gray-200 dark:hover:bg-gray-700 p-2 ${
+                  currentRegion === region.value
+                    ? "bg-gray-200 dark:bg-gray-700"
+                    : ""
+                }`}
+                onClick={() => {
+                  handleRegionChange(region.value);
+                }}
+              >
+                {region.name}
+              </li>
+            ))}
           </ul>
         </div>
       )}
