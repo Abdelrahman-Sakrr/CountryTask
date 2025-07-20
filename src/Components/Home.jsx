@@ -18,10 +18,22 @@ export default function Home() {
       );
     }
   };
+  const handleRegionChange = (searchValue) => {
+    const value = searchValue.trim().toLowerCase();
+    if (!value) {
+      setFilteredCountries(countries);
+    } else {
+      setFilteredCountries(
+        countries.filter((country) =>
+          country.region.toLowerCase().includes(value)
+        )
+      );
+    }
+  };
   return (
     <div className="mt-10 px-5">
       <div>
-        <SearchAndFiltering onCountryChange={handleCountryChange} />
+        <SearchAndFiltering onCountryChange={handleCountryChange} onRegionChange={handleRegionChange} />
       </div>
       <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-20 gap-y-5 px-5">
         {filteredCountries.length > 0 ? (

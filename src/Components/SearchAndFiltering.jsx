@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
-export default function SearchAndFiltering({ onCountryChange }) {
+export default function SearchAndFiltering({
+  onCountryChange,
+  onRegionChange,
+}) {
   const [country, setCountry] = useState("");
   const [toggleDropDown, setToggleDropDown] = useState(false);
 
@@ -8,6 +11,11 @@ export default function SearchAndFiltering({ onCountryChange }) {
     if (e.key === "Enter") {
       onCountryChange(country.trim());
     }
+  };
+  const handleRegionChange = (region) => {
+    onRegionChange(region);
+    setCountry("");
+    setToggleDropDown(false);
   };
 
   return (
@@ -27,13 +35,12 @@ export default function SearchAndFiltering({ onCountryChange }) {
         Filter By Region
       </button>
       {toggleDropDown && (
-        <div className="absolute right-10 top-32 bg-white dark:bg-primaryBlue shadow-lg rounded-md mt-2">
+        <div className="absolute px-5 py-2 right-10 top-32 bg-white dark:bg-primaryBlue shadow-lg rounded-md mt-2">
           <ul className="p-2">
             <li
               className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 p-2"
               onClick={() => {
-                setToggleDropDown(false);
-                onCountryChange("");
+                handleRegionChange("");
               }}
             >
               All Regions
@@ -41,11 +48,26 @@ export default function SearchAndFiltering({ onCountryChange }) {
             <li
               className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 p-2"
               onClick={() => {
-                setToggleDropDown(false);
-                onCountryChange("Africa");
+                handleRegionChange("Africa");
               }}
             >
               Africa
+            </li>
+            <li
+              className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 p-2"
+              onClick={() => {
+                handleRegionChange("Europe");
+              }}
+            >
+              Europe
+            </li>
+            <li
+              className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 p-2"
+              onClick={() => {
+                handleRegionChange("Asia");
+              }}
+            >
+              Asia
             </li>
           </ul>
         </div>
