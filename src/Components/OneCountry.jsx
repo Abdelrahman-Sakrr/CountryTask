@@ -3,9 +3,7 @@ import countries from "../libs/Countries";
 
 export default function OneCountry() {
   const { id } = useParams();
-  console.log(id);
   const oneCountry = countries.filter((country) => country?.name === id);
-  console.log(oneCountry);
   return (
     <>
       <div className="ps-44 pt-10">
