@@ -5,14 +5,37 @@ export default function CustomPagination({
   onPageChange,
 }) {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  console.log(currentPage, totalPages);
+  console.log("Total Pages:", Math.floor(totalPages * 0.75));
+  console.log("Total Pages:", Math.floor(totalPages * 0.25));
 
   if (totalPages <= 1) return null;
-
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  let pages = [];
+  if (totalPages <= 7) {
+    pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  } else if (currentPage > Math.floor(totalPages * 0.75)) {
+    pages = [
+      1,
+      2,
+      currentPage - 1,
+      currentPage,
+      currentPage !== totalPages && totalPages,
+    ];
+  } else if (currentPage <= Math.ceil(totalPages * 0.25)) {
+    pages = [1, 2, 3, 4, 5, "...", totalPages];
+  } else {
+    pages = [
+      1,
+      2,
+      currentPage - 1,
+      currentPage,
+      currentPage + 1,
+      "...",
+      totalPages,
+    ];
+  }
 
   return (
-    <div className="flex justify-center items-center mt-6 gap-2 my-10">
+    <div className="flex justify-center items-center mt-10 pb-10 gap-2">
       <button
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
@@ -24,10 +47,10 @@ export default function CustomPagination({
       >
         Prev
       </button>
-      {pages.slice(currentPage - 1, currentPage + 2).map((page) => (
+      {pages.map((page) => (
         <button
           key={page}
-          onClick={() => onPageChange(page)}
+          onClick={() => onPageChange(page === "..." ? currentPage + 4 : page)}
           className={`px-3 py-1 rounded-md ${
             currentPage === page
               ? "bg-primaryBlue text-white"
@@ -37,21 +60,6 @@ export default function CustomPagination({
           {page}
         </button>
       ))}{" "}
-      {currentPage !== totalPages && (
-        <>
-          <button>...</button>
-          <button
-            onClick={() => onPageChange(totalPages)}
-            className={`px-3 py-1 rounded-md ${
-              currentPage === totalPages
-                ? "dark:text-white text-gray-600 cursor-not-allowed"
-                : " text-white"
-            }`}
-          >
-            {totalPages}
-          </button>
-        </>
-      )}
       <button
         disabled={currentPage === totalPages}
         onClick={() => onPageChange(currentPage + 1)}
